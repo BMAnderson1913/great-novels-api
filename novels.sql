@@ -1,9 +1,9 @@
 CREATE DATABASE greatNovels;
 
-CREATE USER 'novels'@'localhost' IDENTIFIED
-WITH mysql_native_password BY 'n0v31s!';
+CREATE USER 'Library'@'localhost' IDENTIFIED
+WITH mysql_native_password BY 'B@@ks!';
 
-GRANT ALL ON greatNovels.* TO 'novels'@'localhost';
+GRANT ALL ON greatNovels.* TO 'Library'@'localhost';
 
 USE greatNovels;
 
