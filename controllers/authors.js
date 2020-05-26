@@ -1,25 +1,37 @@
 const models = require('../models')
 
 const getAllAuthors = async (request, response) => {
-  const authors = await models.Authors.findAll()
+  try {
+    const authors = await models.Authors.findAll()
 
-  return response.send(authors)
+    return response.send(authors)
+  } catch (error) {
+    return response.sendStatus(500)
+  }
 }
 
 const getAuthorByIdWithGenresAndNovels = async (request, response) => {
-  const { id } = request.params
+  try {
+    const { identifier } = request.params
+    const author = await models.Authors.findAll({
+      include: [{
+        include: [{ model: models.Genres }],
+        model: models.Novels
+      }],
+      where: {
+        [models.Op.or]: [
+          { id: { [models.Op.like]: identifier } },
+          { lastName: { [models.Op.like]: `%${identifier.toLowerCase()}%` } }
+        ]
+      }
+    })
 
-  const author = await models.Authors.findOne({
-    where: { id },
-    include: [{
-      model: models.Novels,
-      include: [{ model: models.Genres }]
-    }]
-  })
-
-  return author
-    ? response.send(author)
-    : response.sendStatus(404)
+    return author.length
+      ? response.send(author)
+      : response.sendStatus(404)
+  } catch (error) {
+    return response.sendStatus(500)
+  }
 }
 
 module.exports = { getAllAuthors, getAuthorByIdWithGenresAndNovels }

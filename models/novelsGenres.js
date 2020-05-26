@@ -1,11 +1,9 @@
 const NovelsGenres = (connection, Sequelize, Genres, Novels) => {
   return connection.define('novelsGenres', {
-    genreId: { type: Sequelize.INTEGER, primaryKey: true, references: { model: Genres, key: 'id' } },
-    novelId: { type: Sequelize.INTEGER, primaryKey: true, references: { model: Novels, key: 'id' } }
+    genreId: { type: Sequelize.INTEGER, references: { model: Genres, key: 'id' } },
+    novelId: { type: Sequelize.INTEGER, references: { model: Novels, key: 'id' } }
   }, {
-    defaultScope: {
-      attributes: { exclude: ['deletedAt'] }
-    }
+    defaultScope: { attributes: { exclude: ['deletedAt'] } }
   }, { paranoid: true })
 }
 
